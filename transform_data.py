@@ -1,7 +1,8 @@
 import scipy.io
 import pandas as pd
 
-data = scipy.io.loadmat('Xtrain.mat')
+
+data = scipy.io.loadmat('data/Xtrain.mat')
 
 print(data.keys())
 
