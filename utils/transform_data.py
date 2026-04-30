@@ -36,8 +36,8 @@ if __name__ == "__main__":
     X_train, y_train = make_sequences(train_scaled, k)
     X_test, y_test = make_sequences(test_scaled,  k)
 
-    print(X_train.shape, y_train.shape)
-    print(X_test.shape,  y_test.shape)
+    print(f"Training set shape: {X_train.shape}, {y_train.shape}")
+    print(f"Testing set shape: {X_test.shape}, {y_test.shape}")
 
     # inverting measurements
     # y_pred_real = scaler.inverse_transform(y_pred.reshape(-1, 1)).ravel()
