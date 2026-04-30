@@ -3,11 +3,6 @@ from tensorflow.keras.layers import LSTM, Dense, Dropout
 
 """
     Long Short Term Memory (LSTM) Model
-
-to add:
-- refactor the class functions to be modular and reusable, as well as add type hints and error handling
-- experiment with different values for the layers and compare results
-- add more metrics for evaluation
 """
 
 class LSTMModel:

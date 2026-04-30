@@ -1,11 +1,3 @@
-"""
-to add:
-- make the code modular, create a main funciton that handles the flow
-- add more metrics for evaluation
-- add visualisation of predictions vs actual values (plot)
-- add training and validation learning curves (rethink if we need a validation set)
-- now, the model is good, the RMSE on both sets show a good starting point, no overfitting
-"""
 from utils.transform_data import prepare_data
 from models.lstm import LSTMModel
 from sklearn.metrics import mean_squared_error, mean_absolute_error
