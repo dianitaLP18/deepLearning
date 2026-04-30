@@ -17,7 +17,7 @@ def make_sequences(series: np.ndarray, k: int) -> tuple[np.ndarray, np.ndarray]:
     return X.reshape(-1, k, 1), y
 
 
-if __name__ == "__main__":
+def prepare_data():
     # load
     raw = scipy.io.loadmat('data/Xtrain.mat')['Xtrain'].ravel().astype(np.float32)
 
@@ -39,5 +39,6 @@ if __name__ == "__main__":
     print(f"Training set shape: {X_train.shape}, {y_train.shape}")
     print(f"Testing set shape: {X_test.shape}, {y_test.shape}")
 
+    return X_train, y_train, X_test, y_test, scaler
     # inverting measurements
     # y_pred_real = scaler.inverse_transform(y_pred.reshape(-1, 1)).ravel()
