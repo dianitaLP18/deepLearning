@@ -2,7 +2,7 @@ import scipy.io
 import matplotlib.pyplot as plt
 
 # Load data
-data = scipy.io.loadmat('Xtrain.mat')
+data = scipy.io.loadmat('data/Xtrain.mat')
 
 # Extract dataset
 array_data = data['Xtrain']
