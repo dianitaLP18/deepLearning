@@ -1,3 +1,4 @@
+from utils.forecasting import plot_recursive_forecast, run_recursive_forecast
 from utils.transform_data import prepare_data
 from models.lstm import LSTMModel
 from sklearn.metrics import mean_squared_error, mean_absolute_error
@@ -50,3 +51,13 @@ if __name__ == "__main__":
                              save_path="images/train_pred.png")
     plot_predictions_actuals(testY_real, testPred_real, title="Test: Predicted vs Actual",
                              save_path="images/test_pred.png")
+    
+    # We pass X_test[-1] because it's our starting "history"
+    forecast_scaled = run_recursive_forecast(model, X_test[-1], steps=200)
+
+    # Inverse Transform stretch it back to its original size.
+    recursive_real = scaler.inverse_transform(forecast_scaled).ravel()
+
+    # Plot the graph
+    plot_recursive_forecast(testY_real, recursive_real, 
+                            save_path="images/Recursive_out_of_sample_forecast.png")
