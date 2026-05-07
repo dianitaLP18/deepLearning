@@ -48,7 +48,7 @@ class LSTMModel:
         """
         if self.model is None:
             raise ValueError("Model not created yet. Call compile() first.")
-        self.model.fit(X, y, **kwargs)
+        return self.model.fit(X, y, **kwargs)
 
     def predict(self, X: np.ndarray) -> np.ndarray:
         """Make predictions using the trained model.
