@@ -1,5 +1,32 @@
-# deepLearning
+# Assignment 1 - Laser Measurement Prediction
 
+## Requirements
+```bash
+pip install -r requirements.txt
+```
+
+## Models Implemented
+- Long Short Term Memory (LSTM)
+
+## Usage
+```bash
+python main.py
+```
+
+## Project Structure
+- `main.py` — 
+- `Models` — 
+- `Data` — 
+- `Utils` — 
+- `Images` — 
+
+## Authors
+- Andrei Medesan (4799526)
+- Kumkum ()
+- Barath ()
+- Diana Luna (9876847)
+
+## -------------------------
 Remaining tasks (TO DO):
 
 For the model:

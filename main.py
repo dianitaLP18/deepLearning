@@ -60,4 +60,4 @@ if __name__ == "__main__":
 
     # Plot the graph
     plot_recursive_forecast(testY_real, recursive_real, 
-                            save_path="images/Recursive_out_of_sample_forecast.png")
+                            save_path="images/recursive_out_of_sample_forecast.png")
