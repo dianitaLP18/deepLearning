@@ -6,13 +6,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from utils.plotting_helpers import plot_predictions_actuals, plot_autocorrelation, plot_training_history
-
+from joblib import dump
 
 if __name__ == "__main__":
     tf.random.set_seed(42)
     np.random.seed(42)
 
     X_train, y_train, X_test, y_test, scaler = prepare_data()
+    dump(scaler, "models/scaler.save")
 
     raw_train_series = scaler.inverse_transform(
         X_train[:, :, 0].reshape(-1, 1)
@@ -29,6 +30,7 @@ if __name__ == "__main__":
         validation_split=0.2, shuffle=False,
         verbose=2,
     )
+    model.model.save("models/final_lstm.h5")
 
     trainPredict = model.predict(X_train)
     testPredict  = model.predict(X_test)
@@ -46,6 +48,8 @@ if __name__ == "__main__":
     print(f"Train RMSE: {train_rmse:.2f}  MAE: {train_mae:.2f}")
     print(f"Test  RMSE: {test_rmse:.2f}  MAE: {test_mae:.2f}")
     print(f"Test/Train RMSE ratio: {test_rmse / train_rmse:.2f}")
+
+    
 
     plot_predictions_actuals(trainY_real, trainPred_real, title="Train: Predicted vs Actual",
                              save_path="images/train_pred.png")
