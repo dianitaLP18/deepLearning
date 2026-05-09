@@ -82,7 +82,7 @@ def plot_autocorrelation(series: np.ndarray, lags: int = 50) -> None:
     plt.show()
 
 
-def plot_training_history(history: History) -> None:
+def plot_training_history(history: History, save_path: str) -> None:
     """Plot the training loss curve from history of the model."""
     h = history.history
     epochs = range(1, len(h['loss']) + 1)
@@ -110,5 +110,5 @@ def plot_training_history(history: History) -> None:
     ax.grid(alpha=0.3)
 
     plt.tight_layout()
-    plt.savefig("images/training_history.png", dpi=120, bbox_inches="tight")
+    plt.savefig(save_path, dpi=120, bbox_inches="tight")
     plt.show()
