@@ -82,33 +82,45 @@ def plot_autocorrelation(series: np.ndarray, lags: int = 50) -> None:
     plt.show()
 
 
-def plot_training_history(history: History, save_path: str) -> None:
-    """Plot the training loss curve from history of the model."""
-    h = history.history
-    epochs = range(1, len(h['loss']) + 1)
+def plot_training_history(histories: list, save_path: str) -> None:
+    """Plot training/validation loss across CV folds.
+
+    :param histories: list of Keras History objects from each CV fold.
+    :param save_path: path to save the plot.
+    """
+    max_len = max(len(h.history["loss"]) for h in histories)
+
+    def _pad(values, length):
+        arr = np.full(length, np.nan)
+        arr[:len(values)] = values
+        return arr
+
+    train = np.stack([_pad(h.history["loss"], max_len) for h in histories])
+    val = np.stack([_pad(h.history["val_loss"], max_len) for h in histories])
+
+    epochs = np.arange(1, max_len + 1)
+    train_mean, train_std = np.nanmean(train, axis=0), np.nanstd(train, axis=0)
+    val_mean,   val_std   = np.nanmean(val,   axis=0), np.nanstd(val,   axis=0)
 
     fig, ax = plt.subplots(figsize=(10, 5))
-    ax.plot(epochs, h['loss'], label='Training Loss', color="#C942C7", linewidth=1.4)
-    if "val_loss" in h:
-        ax.plot(epochs, h["val_loss"], label="Validation loss",
-                color="#d8602e", linewidth=1.4)
+    ax.plot(epochs, train_mean, label="Training Loss (mean)", color="#C942C7", linewidth=1.4)
+    ax.fill_between(epochs, train_mean - train_std, train_mean + train_std, color="#C942C7", alpha=0.2)
+    ax.plot(epochs, val_mean, label="Validation Loss (mean)", color="#d8602e", linewidth=1.4)
+    ax.fill_between(epochs, val_mean - val_std, val_mean + val_std, color="#d8602e", alpha=0.2)
 
-        # mark the best validation epoch
-        best_epoch = int(np.argmin(h["val_loss"])) + 1
-        best_val = min(h["val_loss"])
-        ax.axvline(best_epoch, color="gray", linestyle="--", linewidth=0.8, alpha=0.7)
-        ax.scatter([best_epoch], [best_val], color="#d8602e", zorder=5, s=40)
-        ax.annotate(f"Best: epoch {best_epoch}",
-                    xy=(best_epoch, best_val),
-                    xytext=(8, 10), textcoords="offset points",
-                    fontsize=10, color="gray")
+    # mark median best epoch across folds
+    best_epochs = [int(np.argmin(h.history["val_loss"])) + 1 for h in histories]
+    median_best = int(np.median(best_epochs))
+    ax.axvline(median_best, color="gray", linestyle="--", linewidth=0.8, alpha=0.7)
+    ax.scatter([median_best], [val_mean[median_best - 1]], color="#d8602e", zorder=5, s=40)
+    ax.annotate(f"Median best epoch: {median_best}", xy=(median_best, val_mean[median_best - 1]),
+                xytext=(8, 10), textcoords="offset points", fontsize=10, color="gray")
 
     ax.set_xlabel("Epoch")
     ax.set_ylabel("Loss (MSE)")
-    ax.set_title("Learning curves")
+    ax.set_title(f"CV learning curves (mean ± std across {len(histories)} folds)")
     ax.legend()
     ax.grid(alpha=0.3)
-
     plt.tight_layout()
     plt.savefig(save_path, dpi=120, bbox_inches="tight")
     plt.show()
